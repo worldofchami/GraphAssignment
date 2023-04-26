@@ -3,59 +3,67 @@ import java.util.Random;
 
 public class RandomGraph
 {
-    public static final int INFINITY = 6; //(int) Double.MAX_VALUE;
-    public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private int vertices, edges;
+    private ArrayList<Integer> vertexValues;
+    private ArrayList< ArrayList<Integer> > edgeValues;
+
     private Random random = new Random();
-    private ArrayList < ArrayList<Vertex> > verticesAdjacentNodes;
+
+    private static final int MAX_VERTICES = 100;
 
     public RandomGraph()
     {
-        this.vertices = 6; //random.nextInt(INFINITY - 1) + 1;
-        this.edges = 6; //random.nextInt((int) (Math.pow(this.vertices, 2) + 1) - 1) + 1;
-        this.verticesAdjacentNodes = new ArrayList< ArrayList<Vertex> >();
+        this.vertexValues = new ArrayList<Integer>();
+        // Randomise number of vertices by populating vertexValues AL
+        int randomValue = (int) random.nextInt(MAX_VERTICES) + 10;
 
-        for(int i = 0; i < this.vertices; i++)
+        while(vertexValues.size() < 5)
         {
-            this.verticesAdjacentNodes.add(new ArrayList<Vertex>());
-        }
-
-        for(int j = 0; j < this.edges; j++)
-        {
-            Vertex startVertex = new Vertex(ALPHABET.charAt(j) + ""); //new Vertex(ALPHABET.charAt(random.nextInt(vertices)) + "");
-            Vertex endVertex = new Vertex(ALPHABET.charAt(random.nextInt(vertices)) + "");
-
-            // if(!startVertex.equals(endVertex))
+            // Only add if randomValue is a multiple of 10
+            if(randomValue % 10 == 0 && this.vertexValues.indexOf(randomValue) == -1 && randomValue != 0)
             {
-                createEdge(startVertex, endVertex);
+                vertexValues.add(randomValue);
             }
+
+            randomValue = random.nextInt(MAX_VERTICES) + 10;
         }
+
+        this.edgeValues = new ArrayList< ArrayList<Integer> >();
+
+        for(int i = 0; i < this.vertexValues.size(); i++)
+        {
+            this.edgeValues.add(
+                new ArrayList<Integer>()
+            );
+        }
+        
+        int counter = 0;
+        
+        // Foreach vertex
+        for(int vertexValue : this.vertexValues)
+        {
+            int edgesBound = (int) Math.pow(vertexValue, 2);
+
+            ArrayList<Integer> currentVertexList = this.edgeValues.get(counter);
+
+            double multiplier = 0.2;
+
+            while(currentVertexList.size() < 5)
+            {
+                currentVertexList.add((int) (multiplier * edgesBound));
+
+                multiplier += 0.15;
+            }
+
+            counter++;
+        }
+
+        // System.out.println(this.vertexValues.toString());
+        // for(ArrayList<Integer> al : this.edgeValues)
+        // {
+        //     System.out.println(al.toString());
+        // }
     }
 
-    public void createEdge(Vertex start, Vertex end)
-    {
-        for(ArrayList<Vertex> adjacentNodeList : verticesAdjacentNodes)
-        {
-            if(adjacentNodeList.indexOf(start) == -1)
-            {
-                adjacentNodeList.add(end);
-            }
-        }
-    }
-
-    public String toString()
-    {
-        String output = "";
-
-        for(ArrayList<Vertex> adjacentNodeList : verticesAdjacentNodes)
-        {
-            output += " ";
-            for(Vertex vertex : adjacentNodeList)
-            {
-                output += vertex.name + " ";
-            }
-        }
-
-        return output;
-    }
+    public ArrayList<Integer> getVertexValues() { return this.vertexValues; }
+    public ArrayList< ArrayList<Integer> > getEdgeValues() { return this.edgeValues; }
 }
