@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -5,6 +6,8 @@ public class Generator
 {
     private int vertices, edges;
     private Random random = new Random();
+
+    private String contents;
 
     private ArrayList<String> vertexNames;
     
@@ -23,6 +26,7 @@ public class Generator
         this.vCount = 0;
         this.vertexNames = new ArrayList<String>();
         this.connectionMatrix = new ArrayList< ArrayList<String> >();
+        this.contents = "";
 
         // Populate connection matrix with empty AL's
         // Add every vertex with name to ArrayList
@@ -49,18 +53,46 @@ public class Generator
 
             // Ensures start always != end
             // Ensures no repetition --> end vertex connections doesn't include start vertex
-            while(endVertexIndex == startVertexIndex || startVertexConnections.indexOf(endVertex) != -1)
+            while(endVertexIndex == startVertexIndex) // || startVertexConnections.indexOf(endVertex) != -1)
             {
                 endVertexIndex = random.nextInt(vertices);
-                endVertex = vertexNames.get(endVertexIndex);
             }
+
+            endVertex = vertexNames.get(endVertexIndex);
 
             startVertexConnections.add(endVertex);
             endVertexConnections.add(startVertex);
 
             int weight = random.nextInt(10 - 1) + 1;
 
-            System.out.println(String.format("%s %s %s", startVertex, endVertex, Integer.toString(weight)));
+            contents += String.format("%s %s %s", startVertex, endVertex, Integer.toString(weight)) + "\n";
+        }
+
+        contents = contents.trim();
+    }
+
+    public void createNewFile()
+    {
+        String fileName = "data/Dataset-" + vertices + "-" + edges + ".txt";
+
+        try
+        {
+            File file = new File(fileName);
+
+            if(file.createNewFile())
+                System.out.println("File " + file.getName() + " created");
+            
+            else
+                System.out.println("File " + fileName + " already exists");
+
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(contents);
+            fileWriter.close();
+        }
+
+        catch(Exception e)
+        {
+            System.out.println("File error");
         }
     }
 }

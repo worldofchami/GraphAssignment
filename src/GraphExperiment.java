@@ -6,9 +6,28 @@ public class GraphExperiment
     {
         RandomGraph rg = new RandomGraph();
         ArrayList<Integer> vertexValues = rg.getVertexValues();
-        ArrayList< ArrayList<Integer> > = rg.getEdgeValues();
+        ArrayList< ArrayList<Integer> > edgeValues = rg.getEdgeValues();
 
+        System.out.println(vertexValues);
+        System.out.println(edgeValues);
 
-        //Generator g = new Generator(10, 20);
+        int counter = 0;
+        for(int vertexValue : vertexValues)
+        {
+            ArrayList<Integer> currentEdgeList = edgeValues.get(counter);
+
+            for(int edge : currentEdgeList)
+            {
+                System.out.println(vertexValue + "-" + edge);
+                Generator g = new Generator(vertexValue, edge);
+
+                g.createNewFile();
+            }
+
+            counter++;
+        }
+
+        // Generator g = new Generator(10, 50);
+        // g.createNewFile();
     }
 }
