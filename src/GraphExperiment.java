@@ -10,7 +10,7 @@ public class GraphExperiment
 
         System.out.println(vertexValues);
         System.out.println(edgeValues);
-
+        
         int counter = 0;
         for(int vertexValue : vertexValues)
         {
@@ -26,8 +26,5 @@ public class GraphExperiment
 
             counter++;
         }
-
-        // Generator g = new Generator(10, 50);
-        // g.createNewFile();
     }
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Test
 {
     public static int instancesOf(String string, char character)
@@ -14,6 +16,19 @@ public class Test
 
     public static void main(String[] args)
     {
-        System.out.println(instancesOf("test", 't'));
+        ArrayList< ArrayList<Integer> > ali = new ArrayList< ArrayList<Integer> >();
+
+        for(int i = 0; i < 3; i++)
+        {
+            ali.add(new ArrayList<Integer>());
+        }
+
+        ArrayList<Integer> one = ali.get(0);
+        one.add(3);
+
+        for(ArrayList<Integer> al : ali)
+        {
+            System.out.println(al);
+        }
     }
 }

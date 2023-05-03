@@ -40,7 +40,7 @@ public class Generator
         }
 
         // For each edge, randomise nodes and create connection
-        for(int j = 0; j < edges; j++)
+        while(matrixSublength(connectionMatrix) < edges)
         {
             int startVertexIndex = random.nextInt(vertices);
             int endVertexIndex = random.nextInt(vertices);
@@ -53,22 +53,47 @@ public class Generator
 
             // Ensures start always != end
             // Ensures no repetition --> end vertex connections doesn't include start vertex
-            while(endVertexIndex == startVertexIndex) // || startVertexConnections.indexOf(endVertex) != -1)
+            while(endVertexIndex == startVertexIndex || startVertexConnections.indexOf(endVertex) != -1)
             {
                 endVertexIndex = random.nextInt(vertices);
+                endVertex = vertexNames.get(endVertexIndex);
             }
 
-            endVertex = vertexNames.get(endVertexIndex);
+            endVertexConnections = connectionMatrix.get(endVertexIndex);
+
+            endVertexConnections.add(startVertex);
 
             startVertexConnections.add(endVertex);
-            endVertexConnections.add(startVertex);
+
+            // System.out.println(startVertexConnections.toString());
 
             int weight = random.nextInt(10 - 1) + 1;
 
             contents += String.format("%s %s %s", startVertex, endVertex, Integer.toString(weight)) + "\n";
+            
+            // int c = 0;
+            // for(ArrayList<String> al : connectionMatrix)
+            // {
+            //     if(!al.isEmpty()) System.out.println(c + " " + al);
+            //     c++;
+            // }
+            // System.out.println("----------------------------");
         }
 
-        contents = contents.trim();
+        contents = contents.trim();        
+    }
+
+    private int matrixSublength(ArrayList< ArrayList<String> > matrix)
+    {
+        int count = 0;
+
+        for(ArrayList<String> list : matrix)
+        {
+            if(!list.isEmpty())
+                count++;
+        }
+
+        return count;
     }
 
     public void createNewFile()
