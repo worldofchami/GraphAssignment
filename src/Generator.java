@@ -14,7 +14,7 @@ public class Generator
     // Each vertex's connections array
     private ArrayList< ArrayList<String> > connectionMatrix;
 
-    private int vCount;
+    private int vCount = 0, eCount = 0;
     // Generate vertices in each text file
     // Generate corresponding edges
     // Generate random weights
@@ -37,10 +37,13 @@ public class Generator
             );
 
             vertexNames.add("Node" + (i+1));
+
+            this.vCount++;
         }
 
         // For each edge, randomise nodes and create connection
-        while(matrixSublength(connectionMatrix) < edges)
+        //while(matrixSublength(connectionMatrix) < edges)
+        for(int i = 0; i < edges; i++)
         {
             int startVertexIndex = random.nextInt(vertices);
             int endVertexIndex = random.nextInt(vertices);
@@ -53,11 +56,12 @@ public class Generator
 
             // Ensures start always != end
             // Ensures no repetition --> end vertex connections doesn't include start vertex
-            while(endVertexIndex == startVertexIndex || startVertexConnections.indexOf(endVertex) != -1)
+            while(endVertexIndex == startVertexIndex) // || startVertexConnections.indexOf(endVertex) != -1)
             {
                 endVertexIndex = random.nextInt(vertices);
-                endVertex = vertexNames.get(endVertexIndex);
             }
+
+            endVertex = vertexNames.get(endVertexIndex);
 
             endVertexConnections = connectionMatrix.get(endVertexIndex);
 
@@ -65,19 +69,10 @@ public class Generator
 
             startVertexConnections.add(endVertex);
 
-            // System.out.println(startVertexConnections.toString());
-
             int weight = random.nextInt(10 - 1) + 1;
 
+            this.eCount++;
             contents += String.format("%s %s %s", startVertex, endVertex, Integer.toString(weight)) + "\n";
-            
-            // int c = 0;
-            // for(ArrayList<String> al : connectionMatrix)
-            // {
-            //     if(!al.isEmpty()) System.out.println(c + " " + al);
-            //     c++;
-            // }
-            // System.out.println("----------------------------");
         }
 
         contents = contents.trim();        

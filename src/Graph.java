@@ -5,6 +5,7 @@
  */
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
@@ -39,6 +40,8 @@ public class Graph
     public static final double INFINITY = Double.MAX_VALUE;
     private Map<String,Vertex> vertexMap = new HashMap<String,Vertex>( );
 
+    public static ArrayList<Double> distances = new ArrayList<Double>();
+
     /**
      * Add a new edge to the graph.
      */
@@ -63,9 +66,10 @@ public class Graph
             System.out.println( destName + " is unreachable" );
         else
         {
-            System.out.print( "(Cost is: " + w.dist + ") " );
+            // distances.add(w.dist);
+            System.out.println(w.dist);
             printPath( w );
-            System.out.println( );
+            // System.out.println( );
         }
     }
 
@@ -94,9 +98,9 @@ public class Graph
         if( dest.prev != null )
         {
             printPath( dest.prev );
-            System.out.print( " to " );
+            // System.out.print( " to " );
         }
-        System.out.print( dest.name );
+        // System.out.print( dest.name );
     }
     
     /**
@@ -283,13 +287,13 @@ public class Graph
     {
         try
         {
-            System.out.print( "Enter start node:" );
+            // System.out.print( "Enter start node:" );
             String startName = in.nextLine( );
 
-            System.out.print( "Enter destination node:" );
+            // System.out.print( "Enter destination node:" );
             String destName = in.nextLine( );
 
-            System.out.print( "Enter algorithm (u, d, n, a ): " );
+            // System.out.print( "Enter algorithm (u, d, n, a ): " );
             String alg = in.nextLine( );
             
             if( alg.equals( "u" ) )
@@ -356,11 +360,25 @@ public class Graph
          catch( IOException e )
            { System.err.println( e ); }
 
-         System.out.println( "File read..." );
-         System.out.println( g.vertexMap.size( ) + " vertices" );
+        //  System.out.println( "File read..." );
+        //  System.out.println( g.vertexMap.size( ) + " vertices" );
 
-         Scanner in = new Scanner( System.in );
-         while( processRequest( in, g ) )
-             ;
+         String details = "";
+
+         for(int i = 1; i < g.vertexMap.size()+1; i++)
+         {
+            details += "Node20\n";
+            details += "Node" + i + "\n";
+            details += "d\n";
+         }
+
+         String[] a = details.split("d\n");
+         for(int i = 0; i < a.length; i++)
+         {
+            String temp = a[i] + "d";
+            Scanner sc = new Scanner(temp);
+            processRequest(sc, g);
+            sc.close();
+         }
     }
 }
